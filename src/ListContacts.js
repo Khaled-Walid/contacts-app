@@ -1,55 +1,64 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 class ListContacts extends Component {
   static propTypes = {
     contacts: PropTypes.array.isRequired,
     onDeleteContact: PropTypes.func.isRequired,
-  }
+  };
   state = {
-    query: ''
-  }
+    query: "",
+  };
   updateQuery = (query) => {
     this.setState(() => ({
-      query: query.trim()
-    }))
-  }
+      query: query.trim(),
+    }));
+  };
   render() {
+    const { query } = this.state;
+    const { contacts, onDeleteContact } = this.props;
+
+    const showingContacts =
+      query === ""
+        ? contacts
+        : contacts.filter((c) =>
+            c.name.toLowerCase().includes(query.toLowerCase())
+          );
+
     return (
-      <div className='list-contacts'>
-        <div className='list-contacts-top'>
+      <div className="list-contacts">
+        <div className="list-contacts-top">
           <input
-            className='search-contacts'
-            type='text'
-            placeholder='Search Contacts'
-            value={this.state.query}
+            className="search-contacts"
+            type="text"
+            placeholder="Search Contacts"
+            value={query}
             onChange={(event) => this.updateQuery(event.target.value)}
           />
         </div>
-        <ol className='contact-list'>
-          {this.props.contacts.map((contact) => (
-            <li key={contact.id} className='contact-list-item'>
+        <ol className="contact-list">
+          {showingContacts.map((contact) => (
+            <li key={contact.id} className="contact-list-item">
               <div
-                className='contact-avatar'
+                className="contact-avatar"
                 style={{
-                  backgroundImage: `url(${contact.avatarURL})`
+                  backgroundImage: `url(${contact.avatarURL})`,
                 }}
-              ></div>
-              <div className='contact-details'>
+              />
+              <div className="contact-details">
                 <p>{contact.name}</p>
                 <p>{contact.handle}</p>
               </div>
               <button
-                onClick={() => this.props.onDeleteContact(contact)}
-                className='contact-remove'>
-                  Remove
+                onClick={() => onDeleteContact(contact)}
+                className="contact-remove"
+              >
+                Remove
               </button>
             </li>
           ))}
         </ol>
       </div>
-    )
+    );
   }
 }
-
-export default ListContacts
+export default ListContacts;
