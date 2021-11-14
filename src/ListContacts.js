@@ -1,27 +1,36 @@
-import React from 'react'
-function ListContacts (props) {
+import React from "react";
+import PropTypes from "prop-types";
+
+function ListContacts(props) {
   return (
-    <ol className='contact-list'>
+    <ol className="contact-list">
       {props.contacts.map((contact) => (
-        <li key={contact.id} className='contact-list-item'>
+        <li key={contact.id} className="contact-list-item">
           <div
-            className='contact-avatar'
+            className="contact-avatar"
             style={{
-              backgroundImage: `url(${contact.avatarURL})`
+              backgroundImage: `url(${contact.avatarURL})`,
             }}
-          ></div>
-          <div className='contact-details'>
+          />
+          <div className="contact-details">
             <p>{contact.name}</p>
             <p>{contact.handle}</p>
           </div>
           <button
             onClick={() => props.onDeleteContact(contact)}
-            className='contact-remove'>
-              Remove
+            className="contact-remove"
+          >
+            Remove
           </button>
         </li>
       ))}
     </ol>
-  )
+  );
 }
-export default ListContacts
+
+ListContacts.propTypes = {
+  contacts: PropTypes.array.isRequired,
+  onDeleteContact: PropTypes.func.isRequired,
+};
+
+export default ListContacts;
